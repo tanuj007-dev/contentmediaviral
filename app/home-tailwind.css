@@ -1,0 +1,86 @@
+/* Homepage only — keyframes + pieces awkward in pure Tailwind. */
+
+@keyframes home-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes home-marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.home-marquee-track {
+  display: flex;
+  gap: 60px;
+  width: max-content;
+  white-space: nowrap;
+  animation: home-marquee-scroll 40s linear infinite;
+}
+
+.hero-tag-dot-animate {
+  animation: home-pulse 2.5s ease-in-out infinite;
+}
+
+.home-top-nav.scrolled {
+  border-bottom-color: var(--border);
+  background: rgba(10, 10, 10, 0.85);
+  padding: 14px 32px;
+}
+
+@media (max-width: 900px) {
+  .home-top-nav.scrolled {
+    padding: 12px 20px;
+  }
+}
+
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition:
+    max-height 0.4s ease,
+    padding-top 0.4s ease;
+}
+
+.faq-item.open .faq-a {
+  max-height: 600px;
+  padding-top: 16px;
+}
+
+.faq-item.open .faq-icon {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  transform: rotate(45deg);
+}
+
+.compare-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.form-success {
+  display: none;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.inquire-form.submitted .form-h3,
+.inquire-form.submitted .form-sub,
+.inquire-form.submitted .form-row,
+.inquire-form.submitted .form-field,
+.inquire-form.submitted .form-submit {
+  display: none;
+}
+
+.inquire-form.submitted .form-success {
+  display: block;
+}
