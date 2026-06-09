@@ -53,7 +53,7 @@ export function HomeFooter() {
             <ul className="flex list-none flex-col gap-3">
               {SERVICE_LINKS.map((t) => (
                 <li key={t}>
-                  <Link href="#services" className="text-sm text-[var(--text)] no-underline hover:text-[var(--accent)]">
+                  <Link href="/services" className="text-sm text-[var(--text)] no-underline hover:text-[var(--accent)]">
                     {t}
                   </Link>
                 </li>
@@ -64,7 +64,7 @@ export function HomeFooter() {
             <h4 className="mb-5 text-xs font-semibold uppercase tracking-wider text-[var(--text-dim)]">Company</h4>
             <ul className="flex list-none flex-col gap-3">
               <li>
-                <Link href="#about" className="text-sm text-[var(--text)] no-underline hover:text-[var(--accent)]">
+                <Link href="/about" className="text-sm text-[var(--text)] no-underline hover:text-[var(--accent)]">
                   About Garvit
                 </Link>
               </li>
@@ -76,6 +76,11 @@ export function HomeFooter() {
               <li>
                 <Link href="/portfolio" className="text-sm text-[var(--text)] no-underline hover:text-[var(--accent)]">
                   Portfolio
+                </Link>
+              </li>
+              <li>
+                <Link href="/case-studies" className="text-sm text-[var(--text)] no-underline hover:text-[var(--accent)]">
+                  Case Studies
                 </Link>
               </li>
               <li>

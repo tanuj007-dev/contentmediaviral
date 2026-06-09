@@ -11,7 +11,7 @@ const MARQUEE = [
   {
     text: "100M+ Organic Views",
     icon: FaChartLine,
-    color: "#22c55e",
+    color: "#a855f7",
   },
   {
     text: "Personal Branding",
@@ -21,22 +21,22 @@ const MARQUEE = [
   {
     text: "Podcast Repurposing",
     icon: FaMicrophoneAlt,
-    color: "#f59e0b",
+    color: "#a855f7",
   },
   {
     text: "Cinematic Edits",
     icon: FaFilm,
-    color: "#06b6d4",
+    color: "#a855f7",
   },
   {
     text: "YouTube Management",
     icon: FaYoutube,
-    color: "#ff0000",
+    color: "#a855f7",
   },
   {
     text: "LinkedIn Authority",
     icon: FaLinkedin,
-    color: "#0a66c2",
+    color: "#a855f7",
   },
 ] as const;
 

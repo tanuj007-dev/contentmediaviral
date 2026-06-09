@@ -1,5 +1,8 @@
 import Link from "next/link";
+import instagramTemplate from "@/public/account not found _ Funny iphone wallpaper, Instagram, Aesthetic template.jpg";
 import { SectionHeader } from "./SectionHeader";
+
+const RESULTS_IMAGE = instagramTemplate.src;
 
 const RESULTS = [
   {
@@ -8,8 +11,6 @@ const RESULTS = [
     before: "7,005",
     after: "80.6K",
     detail: "18M views · 1.6M likes generated",
-    image:
-      "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop",
   },
   {
     handle: "@shri_dhanlaxmi_rajputi",
@@ -17,8 +18,6 @@ const RESULTS = [
     before: "319",
     after: "10K",
     detail: "1.2M reach in 30 days · UGC-led growth",
-    image:
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200&auto=format&fit=crop",
   },
   {
     handle: "@gabe_einhorn",
@@ -26,8 +25,6 @@ const RESULTS = [
     before: "1.2K",
     after: "15K",
     detail: "5.2M reach generated across content ecosystem",
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format&fit=crop",
   },
 ];
 
@@ -58,14 +55,14 @@ export function ResultsSection() {
               className="group overflow-hidden rounded-[32px] border border-[var(--border)] bg-[var(--surface)] transition-all duration-500 hover:-translate-y-2 hover:border-[var(--accent)]"
             >
               {/* Image */}
-              <div className="relative h-64 overflow-hidden">
+              <div className="relative h-72 overflow-hidden bg-black">
                 <img
-                  src={item.image}
-                  alt={item.handle}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  src={RESULTS_IMAGE}
+                  alt={`${item.handle} Instagram profile`}
+                  className="h-full w-full object-contain object-top transition-transform duration-700 group-hover:scale-[1.03]"
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black via-black/80 to-transparent" />
 
                 <div className="absolute bottom-5 left-5">
                   <div className="mb-1 text-sm font-semibold text-[var(--accent)]">

@@ -8,6 +8,9 @@ export function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const onPortfolio = pathname === "/portfolio";
+  const onAbout = pathname === "/about";
+  const onServices = pathname === "/services";
+  const onCaseStudies = pathname === "/case-studies";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -38,16 +41,24 @@ export function Nav() {
       <ul className="hidden list-none items-center gap-8 text-sm font-medium min-[901px]:flex">
         <li>
           <Link
-            href="/#about"
-            className="text-[var(--text-dim)] no-underline transition-colors duration-200 hover:text-[var(--text)]"
+            href="/about"
+            className={
+              onAbout
+                ? "text-[var(--text)] no-underline transition-colors duration-200"
+                : "text-[var(--text-dim)] no-underline transition-colors duration-200 hover:text-[var(--text)]"
+            }
           >
             About
           </Link>
         </li>
         <li>
           <Link
-            href="/#services"
-            className="text-[var(--text-dim)] no-underline transition-colors duration-200 hover:text-[var(--text)]"
+            href="/services"
+            className={
+              onServices
+                ? "text-[var(--text)] no-underline transition-colors duration-200"
+                : "text-[var(--text-dim)] no-underline transition-colors duration-200 hover:text-[var(--text)]"
+            }
           >
             Services
           </Link>
@@ -60,7 +71,7 @@ export function Nav() {
             Process
           </Link>
         </li>
-        <li>
+        <li>  
           <Link
             href="/portfolio"
             className={
@@ -74,10 +85,30 @@ export function Nav() {
         </li>
         <li>
           <Link
+            href="/case-studies"
+            className={
+              onCaseStudies
+                ? "text-[var(--text)] no-underline transition-colors duration-200"
+                : "text-[var(--text-dim)] no-underline transition-colors duration-200 hover:text-[var(--text)]"
+            }
+          >
+            Case Studies
+          </Link>
+        </li>
+        <li>
+          <Link
             href="/#results"
             className="text-[var(--text-dim)] no-underline transition-colors duration-200 hover:text-[var(--text)]"
           >
             Results
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/#faq"
+            className="text-[var(--text-dim)] no-underline transition-colors duration-200 hover:text-[var(--text)]"
+          >
+            FAQ
           </Link>
         </li>
       </ul>

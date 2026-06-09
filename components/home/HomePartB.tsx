@@ -1,6 +1,5 @@
 import {
   BigNumbersSection,
-  CaseStudySection,
   CompareSection,
   FaqSection,
   FoundersSection,
@@ -15,9 +14,8 @@ export default function HomePartB() {
     <>
       <BigNumbersSection />
       <ResultsSection />
-      <CaseStudySection />
       <TestimonialsSection />
-      <FoundersSection />
+    
       <CompareSection />
       <FaqSection />
       <InquireSection />

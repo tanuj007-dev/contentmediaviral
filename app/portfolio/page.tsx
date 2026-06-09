@@ -734,7 +734,7 @@ export default function PortfolioPage() {
                 ].map((item) => (
                   <li key={item}>
                     <Link
-                      href="/#services"
+                      href="/services"
                       className="text-sm text-[var(--text)] no-underline transition-colors hover:text-[var(--accent)]"
                     >
                       {item}
@@ -750,7 +750,7 @@ export default function PortfolioPage() {
               <ul className="flex list-none flex-col gap-3">
                 <li>
                   <Link
-                    href="/#about"
+                    href="/about"
                     className="text-sm text-[var(--text)] no-underline transition-colors hover:text-[var(--accent)]"
                   >
                     About Garvit

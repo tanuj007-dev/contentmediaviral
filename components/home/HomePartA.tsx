@@ -1,12 +1,10 @@
 import {
-  AboutSection,
   DeliverablesSection,
   HeroSection,
   HomeNav,
   ManifestoSection,
   MarqueeSection,
   ProcessSection,
-  ServicesSection,
   StatsSection,
   WhySection,
   WorkSection,
@@ -20,8 +18,6 @@ export default function HomePartA() {
       <MarqueeSection />
       <StatsSection />
       {/* <ManifestoSection /> */}
-      <AboutSection />
-      <ServicesSection />
       <WhySection />
       <ProcessSection />
       <DeliverablesSection />

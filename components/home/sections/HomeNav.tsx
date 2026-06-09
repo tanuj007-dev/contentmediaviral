@@ -1,10 +1,11 @@
 import Link from "next/link";
 
 const NAV_LINKS = [
-  ["About", "#about"],
-  ["Services", "#services"],
+  ["About", "/about"],
+  ["Services", "/services"],
   ["Process", "#process"],
   ["Portfolio", "/portfolio"],
+  ["Case Studies", "/case-studies"],
   ["Results", "#results"],
   ["FAQ", "#faq"],
 ] as const;

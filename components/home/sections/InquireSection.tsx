@@ -1,3 +1,4 @@
+import { InquirePhoneField } from "./InquirePhoneField";
 import { SectionEyebrow } from "./SectionEyebrow";
 
 const PERKS = ["30-minute discovery call", "Custom plan delivered after", "No pressure, no pitch"] as const;
@@ -22,7 +23,7 @@ export function InquireSection() {
         <div className="inquire-left pt-1">
           <SectionEyebrow>Let&apos;s Work Together</SectionEyebrow>
           <h2 className="inquire-h2 mb-7 text-[clamp(40px,5vw,80px)] font-extrabold leading-[0.95] tracking-[-0.04em]">
-            Book a <span className="serif accent-text">free 1:1</span>
+            Book a
             <br />
             discovery call.
           </h2>
@@ -104,21 +105,7 @@ export function InquireSection() {
               <label htmlFor="f-phone" className="mb-2 block text-xs font-medium uppercase tracking-wider text-[var(--text-dim)]">
                 Phone Number
               </label>
-              <div className="phone-group grid grid-cols-[110px_1fr] gap-2 md:grid-cols-[130px_1fr]">
-                <select
-                  id="f-code"
-                  name="country-code"
-                  className="phone-code w-full cursor-pointer appearance-none rounded-[var(--radius)] border border-[var(--border)] bg-[var(--bg)] px-3 py-3.5 pr-8 text-[15px] text-[var(--text)] outline-none [-webkit-appearance:none] focus:border-[var(--accent)] focus:bg-[var(--bg-3)]"
-                />
-                <input
-                  id="f-phone"
-                  name="phone"
-                  type="tel"
-                  placeholder="98765 43210"
-                  required
-                  className="w-full rounded-[var(--radius)] border border-[var(--border)] bg-[var(--bg)] px-4 py-3.5 text-[15px] text-[var(--text)] outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--accent)] focus:bg-[var(--bg-3)]"
-                />
-              </div>
+              <InquirePhoneField />
             </div>
             <div className="form-field mb-4">
               <label htmlFor="f-company" className="mb-2 block text-xs font-medium uppercase tracking-wider text-[var(--text-dim)]">
