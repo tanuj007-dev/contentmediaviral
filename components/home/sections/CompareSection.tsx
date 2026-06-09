@@ -2,10 +2,10 @@ import { SectionHeader } from "./SectionHeader";
 
 const COMPARE_ROWS = [
   ["Strategy + Positioning", "✓ Built-in", "Maybe", "Rarely", "Add-on"],
-  ["Cinematic Video Edits", "✓ World-class", "Depends on hire", "Inconsistent", "Often template-based"],
+  ["Signature Video Edits", "✓ World-class", "Depends on hire", "Inconsistent", "Often template-based"],
   ["Multi-Platform Posting", "✓ LinkedIn · IG · YT", "Usually 1–2 platforms", "No", "Limited"],
   ["Founder Time Required", "~2 hrs / week", "10+ hrs / week", "5+ hrs / week", "5+ hrs / week"],
-  ["Lock-In Contracts", "Month-to-month", "Permanent", "Variable", "3–12 months"],
+  ["End to End Content System", "Month-to-month", "Permanent", "Variable", "3–12 months"],
   ["Speed to First Asset", "4–5 days", "30+ days", "Variable", "2–3 weeks"],
   ["All-In Monthly Cost", "Single retainer", "$8K+ / mo", "Per-project", "High retainer"],
 ] as const;

@@ -1,34 +1,63 @@
-"use client";
-
-import Lottie from "lottie-react";
+import type { IconType } from "react-icons";
+import {
+  FaBolt,
+  FaFileAlt,
+  FaShareAlt,
+  FaUser,
+  FaVideo,
+} from "react-icons/fa";
+import { FiEdit3 } from "react-icons/fi";
 import { SectionHeader } from "./SectionHeader";
-import strategyLottie from "@/public/growth and profit.json";
-import productionLottie from "@/public/7915fb40-1175-11ee-b592-875609e20080.json";
-import growthLottie from "@/public/6e55457e-116d-11ee-a091-ef1bd4874750 (1).json";
 
-const DELIV = [
+const DELIVERABLES: {
+  num: string;
+  title: string;
+  description: string;
+  icon: IconType;
+}[] = [
   {
-    title: "Strategy",
+    num: "01",
+    title: "Personal Branding",
     description:
-      "We map your brand, audience, and content direction before anything goes live.",
-    lottie: strategyLottie,
-    scale: 1.65,
+      "We craft a magnetic identity that makes you the go-to voice in your space — from positioning and messaging to visual presence.",
+    icon: FaUser,
   },
   {
-    title: "Production",
+    num: "02",
+    title: "Scripting & Research",
     description:
-      "Scripts, edits, thumbnails, and posting — the full pipeline handled for you.",
-    lottie: productionLottie,
-    scale: 1.6,
+      "Deep-dive research and compelling scripts that resonate — engineered for retention, shareability, and authority.",
+    icon: FaFileAlt,
   },
   {
-    title: "Growth",
+    num: "03",
+    title: "Pre-Production",
     description:
-      "Weekly dashboards and monthly reports show what's actually moving the needle.",
-    lottie: growthLottie,
-    scale: 1.15,
+      "Full planning and coordination — shot lists, storyboards, scheduling — so every shoot runs flawlessly before the camera rolls.",
+    icon: FaVideo,
   },
-] as const;
+  {
+    num: "04",
+    title: "Post-Production & Edits",
+    description:
+      "Cinematic edits, colour grading, sound design, and motion graphics — polished to platform perfection for every format.",
+    icon: FiEdit3,
+  },
+  {
+    num: "05",
+    title: "Distribution",
+    description:
+      "Strategic publishing, SEO-optimised descriptions, thumbnails, and cross-platform scheduling to maximise your reach and impact.",
+    icon: FaShareAlt,
+  },
+  {
+    num: "06",
+    title: "Full Agency Support",
+    description:
+      "We embed ourselves in your brand as a true creative partner — always on, always building, always growing your presence.",
+    icon: FaBolt,
+  },
+];
 
 export function DeliverablesSection() {
   return (
@@ -38,53 +67,51 @@ export function DeliverablesSection() {
           eyebrow="What You Get"
           title={
             <>
-              Every piece <span className="serif accent-text">delivered.</span>
-              <br />
-              Nothing in your way.
+              Everything you need to{" "}
+              <span className="serif accent-text">own your niche.</span>
             </>
           }
-          subtitle="A full breakdown of what we ship every month — strategy, production, and growth."
-          subtitleClassName="section-subtitle mb-16 max-w-[680px] text-[clamp(17px,1.2vw,20px)] leading-[1.55] text-[var(--text-dim)]"
+          subtitle="From the first idea to the final distribution — we handle your entire content operation so you can focus on what you do best."
+          subtitleClassName="section-subtitle mb-12 max-w-[720px] text-[clamp(17px,1.2vw,20px)] leading-[1.55] text-[var(--text-dim)] md:mb-14"
+          titleClassName="section-title mb-5 max-w-[940px] text-[clamp(32px,4.5vw,56px)] font-bold leading-[1.08] tracking-[-0.03em] md:mb-6"
         />
-        <div className="deliv-grid grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
-          {DELIV.map((d) => (
-            <div
-              key={d.title}
-              className="deliv-card reveal flex flex-col items-center rounded-[28px] border border-white/[0.08] bg-[#161616] px-6 pb-10 pt-8 text-center transition-[transform,border-color] hover:-translate-y-1 hover:border-[rgba(124,92,255,0.25)] md:px-8 md:pb-12 md:pt-10"
-            >
-              <DeliverableVisual animationData={d.lottie} scale={d.scale} />
-              <h4 className="mb-3 text-xl font-bold tracking-tight text-white md:text-[1.35rem]">
-                {d.title}
-              </h4>
-              <p className="max-w-[260px] text-sm leading-relaxed text-[var(--text-dim)] md:text-[15px]">
-                {d.description}
-              </p>
-            </div>
-          ))}
+
+        <div className="deliv-grid reveal overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--border)] sm:rounded-[20px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {DELIVERABLES.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <article
+                  key={item.num}
+                  className="deliv-card group relative flex min-h-[280px] flex-col bg-[var(--bg-3)] p-7 transition-[background-color,box-shadow] duration-300 ease-out hover:bg-[var(--surface)] hover:shadow-[0_16px_48px_rgba(124,92,255,0.12)] sm:min-h-[300px] sm:p-8 lg:min-h-[320px]"
+                >
+                  <span className="absolute right-7 top-7 text-sm font-medium text-[var(--text-muted)] sm:right-8 sm:top-8">
+                    {item.num}
+                  </span>
+
+                  <div className="mb-6 flex h-11 w-11 items-center justify-center rounded-[10px] bg-[#0a0a0a] text-white transition-colors duration-300 group-hover:bg-[var(--accent)]">
+                    <Icon className="text-[18px]" aria-hidden />
+                  </div>
+
+                  <h3 className="mb-3 pr-10 text-lg font-bold leading-snug tracking-tight text-[var(--text)] sm:text-xl">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-[15px] leading-relaxed text-[var(--text-dim)]">
+                    {item.description}
+                  </p>
+
+                  <div
+                    className="absolute bottom-0 left-0 h-[3px] w-0 bg-[var(--accent)] transition-[width] duration-300 ease-out group-hover:w-full"
+                    aria-hidden
+                  />
+                </article>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function DeliverableVisual({
-  animationData,
-  scale,
-}: {
-  animationData: object;
-  scale: number;
-}) {
-  return (
-    <div
-      className="mb-8 flex h-[220px] w-full max-w-[320px] items-center justify-center overflow-visible"
-      aria-hidden
-    >
-      <div
-        className="h-full w-full"
-        style={{ transform: `scale(${scale})` }}
-      >
-        <Lottie animationData={animationData} loop className="h-full w-full" />
-      </div>
-    </div>
   );
 }

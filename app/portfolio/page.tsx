@@ -296,28 +296,6 @@ const stories = [
   },
 ] as const;
 
-const beforeList = [
-  "Weak hooks that don't stop the scroll",
-  "Very basic editing — no rhythm, no retention",
-  "Camera quality unclear, audio messy",
-  "Bad font choice and editing style",
-  "Storytelling that loses the viewer in 5 seconds",
-  "No clear messaging or positioning",
-  "Editing competes with the content",
-  "Poor CTAs, weak audio, no consistency",
-] as const;
-
-const afterList = [
-  "Strong, story-driven hooks built for the first 3 seconds",
-  "Custom editing style that matches your brand voice",
-  "Cinematic camera direction, clean audio",
-  "Premium fonts, premium colors, premium feel",
-  "Storytelling that earns watch-through and shares",
-  "Clear messaging and value-driven content",
-  "Editing complements the message, not competes",
-  "CTAs and hooks tested for actual conversion",
-] as const;
-
 export default function PortfolioPage() {
   return (
     <>
@@ -588,57 +566,6 @@ export default function PortfolioPage() {
                   </ul>
                 </div>
               ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="relative border-y border-[var(--border)] bg-[var(--bg-2)] px-5 py-20 md:px-8 md:py-[120px]">
-        <div className="mx-auto max-w-[var(--max-w)]">
-          <div className="mb-6 inline-flex items-center gap-3 text-xs font-medium uppercase tracking-[0.18em] text-[var(--text-dim)] before:h-px before:w-7 before:bg-[var(--accent)] before:content-['']">
-            Content Redesign
-          </div>
-          <h2 className="mb-6 max-w-[900px] text-[clamp(36px,5vw,76px)] font-extrabold leading-none tracking-[-0.035em]">
-            A <span className="serif accent-text">redesign</span>
-            <br />
-            changes everything.
-          </h2>
-          <p className="mb-14 max-w-[680px] text-[clamp(17px,1.2vw,20px)] leading-[1.55] text-[var(--text-dim)]">
-            What founders looked like before us — and after. The hooks, the
-            cuts, the positioning. All upgraded.
-          </p>
-          <Reveal>
-            <div className="grid grid-cols-1 gap-4 min-[769px]:grid-cols-2">
-              <div className="overflow-hidden rounded-[var(--radius-xl)] bg-[#f5f5f5] px-8 py-12 text-[#0a0a0a] min-[769px]:px-10 min-[769px]:py-12">
-                <div className="mono mb-8 inline-block rounded-full bg-[#1a1a1a] px-3.5 py-1.5 text-xs text-white">
-                  BEFORE US
-                </div>
-                <ul className="flex list-none flex-col gap-3.5">
-                  {beforeList.map((line) => (
-                    <li
-                      key={line}
-                      className="flex gap-3 text-[15px] leading-normal before:flex before:h-[22px] before:w-[22px] before:shrink-0 before:items-center before:justify-center before:rounded-full before:bg-[#1a1a1a] before:text-[11px] before:font-bold before:text-[#f5f5f5] before:content-['✗']"
-                    >
-                      {line}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="overflow-hidden rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--bg-2)] px-8 py-12 min-[769px]:px-10 min-[769px]:py-12">
-                <div className="mono mb-8 inline-block rounded-full bg-[var(--accent)] px-3.5 py-1.5 text-xs text-white">
-                  AFTER US
-                </div>
-                <ul className="flex list-none flex-col gap-3.5">
-                  {afterList.map((line) => (
-                    <li
-                      key={line}
-                      className="flex gap-3 text-[15px] leading-normal text-[var(--text)] before:flex before:h-[22px] before:w-[22px] before:shrink-0 before:items-center before:justify-center before:rounded-full before:bg-[var(--accent)] before:text-[11px] before:font-bold before:text-white before:content-['✓']"
-                    >
-                      {line}
-                    </li>
-                  ))}
-                </ul>
-              </div>
             </div>
           </Reveal>
         </div>
