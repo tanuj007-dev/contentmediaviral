@@ -47,14 +47,20 @@ const TESTS = [
 
 type TestItem = (typeof TESTS)[number];
 
-// Distribute cards across 3 columns
+// Distribute cards across 3 columns (desktop) and 2 columns (tablet)
 const COLUMNS: TestItem[][] = [[], [], []];
-TESTS.forEach((t, i) => COLUMNS[i % 3].push(t));
+const COLUMNS_TABLET: TestItem[][] = [[], []];
+TESTS.forEach((t, i) => {
+  COLUMNS[i % 3].push(t);
+  COLUMNS_TABLET[i % 2].push(t);
+});
+
+const ALL_TESTIMONIALS: TestItem[] = [...TESTS];
 
 function TestCard({ t }: { t: TestItem }) {
   return (
-    <article className="mb-3 flex flex-col rounded-[18px] border border-white/[0.07] bg-[#111] p-6">
-      <p className="mb-5 text-[14.5px] leading-[1.7] text-zinc-400">
+    <article className="mb-3 flex flex-col rounded-[16px] border border-white/[0.07] bg-[#111] p-5 sm:rounded-[18px] sm:p-6">
+      <p className="mb-4 text-[14px] leading-[1.65] text-zinc-400 sm:mb-5 sm:text-[14.5px] sm:leading-[1.7]">
         {t.quote}
       </p>
       <div className="mt-auto flex items-center gap-3">
@@ -75,20 +81,22 @@ function MarqueeColumn({
   cards,
   durationSecs,
   reverse = false,
+  className = "",
 }: {
   cards: TestItem[];
   durationSecs: number;
   reverse?: boolean;
+  className?: string;
 }) {
   // Triple-clone so there's always enough content to fill the viewport
   const items = [...cards, ...cards, ...cards];
 
   return (
-    <div className="relative flex-1 overflow-hidden">
+    <div className={`relative min-w-0 flex-1 overflow-hidden ${className}`}>
       {/* Fade top */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-20 bg-gradient-to-b from-[#0a0a0a] to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-12 bg-gradient-to-b from-[#0a0a0a] to-transparent sm:h-20" />
       {/* Fade bottom */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-20 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-12 bg-gradient-to-t from-[#0a0a0a] to-transparent sm:h-20" />
 
       {/* Scrolling track */}
       <div
@@ -110,7 +118,7 @@ function MarqueeColumn({
 
 export function TestimonialsSection() {
   return (
-    <section className="section relative overflow-hidden px-5 py-20 md:px-8 md:py-[130px]">
+    <section className="section relative overflow-hidden px-4 py-16 sm:px-5 md:px-8 md:py-20 lg:py-[130px]">
       {/* Keyframes — single injection, no duplication */}
       <style>{`
         @keyframes marquee-up {
@@ -139,7 +147,19 @@ export function TestimonialsSection() {
           subtitle='Real partners we ship with weekly. No anonymous "CEO of company X."'
         />
 
-        <div className="reveal flex h-[600px] gap-3 overflow-hidden md:h-[660px]">
+        {/* Mobile: single scrolling column */}
+        <div className="reveal mt-8 flex h-[min(460px,62vh)] gap-3 overflow-hidden sm:mt-10 md:hidden">
+          <MarqueeColumn cards={ALL_TESTIMONIALS} durationSecs={28} />
+        </div>
+
+        {/* Tablet: two columns */}
+        <div className="reveal mt-10 hidden h-[560px] gap-3 overflow-hidden md:flex lg:hidden">
+          <MarqueeColumn cards={COLUMNS_TABLET[0]} durationSecs={22} />
+          <MarqueeColumn cards={COLUMNS_TABLET[1]} durationSecs={26} reverse />
+        </div>
+
+        {/* Desktop: three columns */}
+        <div className="reveal mt-10 hidden h-[660px] gap-3 overflow-hidden lg:flex">
           <MarqueeColumn cards={COLUMNS[0]} durationSecs={20} />
           <MarqueeColumn cards={COLUMNS[1]} durationSecs={26} reverse />
           <MarqueeColumn cards={COLUMNS[2]} durationSecs={18} />
