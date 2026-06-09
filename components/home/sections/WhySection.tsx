@@ -4,11 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useMotionTemplate,
+  useMotionValueEvent,
   useScroll,
   useSpring,
   useTransform,
   type MotionValue,
 } from "framer-motion";
+import Lightfall from "@/components/Lightfall";
 import { SectionHeader } from "./SectionHeader";
 
 const WHY = [
@@ -35,11 +37,85 @@ const WHY = [
 ] as const;
 
 const CARD_COUNT = WHY.length;
-const SCROLL_HEIGHT_VH = 380;
+const SCROLL_HEIGHT_VH = 280;
 
 const SPRING = { stiffness: 90, damping: 32, mass: 0.85, restDelta: 0.0008 };
 
+const CARD_LIGHTFALL = [
+  {
+    colors: ["#A78BFA", "#7C5CFF", "#C084FC"],
+    backgroundColor: "#12082e",
+  },
+  {
+    colors: ["#7C5CFF", "#5227FF", "#A6C8FF"],
+    backgroundColor: "#0f0a24",
+  },
+  {
+    colors: ["#FF9FFC", "#7C5CFF", "#5227FF"],
+    backgroundColor: "#140a2a",
+  },
+  {
+    colors: ["#06b6d4", "#7C5CFF", "#A78BFA"],
+    backgroundColor: "#0a1028",
+  },
+] as const;
+
 type WhyItem = (typeof WHY)[number];
+
+function WhyCardShell({
+  index,
+  children,
+  compact = false,
+  enableEffects = false,
+  paused = false,
+}: {
+  index: number;
+  children: React.ReactNode;
+  compact?: boolean;
+  enableEffects?: boolean;
+  paused?: boolean;
+}) {
+  const theme = CARD_LIGHTFALL[index % CARD_LIGHTFALL.length];
+
+  return (
+    <div
+      className={`relative flex h-full flex-col justify-between overflow-hidden rounded-[18px] border border-[var(--border)] bg-[var(--bg)] shadow-[0_16px_48px_rgba(0,0,0,0.12)] sm:rounded-[22px] lg:rounded-[28px] lg:shadow-[0_16px_48px_rgba(0,0,0,0.08)]`}
+    >
+      {enableEffects ? (
+        <div className="pointer-events-none absolute inset-0">
+          <Lightfall
+            colors={[...theme.colors]}
+            backgroundColor={theme.backgroundColor}
+            speed={0.55}
+            streakCount={2}
+            streakWidth={0.85}
+            streakLength={1.1}
+            glow={0.9}
+            density={0.4}
+            twinkle={0.65}
+            zoom={2.4}
+            backgroundGlow={0.45}
+            opacity={0.7}
+            mouseInteraction={false}
+            dpr={1}
+            paused={paused}
+            mixBlendMode="screen"
+          />
+        </div>
+      ) : (
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#7c5cff]/14 via-transparent to-[#5227ff]/10" />
+      )}
+
+      <div
+        className={`relative z-10 flex h-full flex-col justify-between ${
+          compact ? "p-5 sm:p-6" : "p-5 sm:p-6 lg:p-7"
+        }`}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
 
 function WhyCardContent({
   num,
@@ -54,14 +130,12 @@ function WhyCardContent({
 }) {
   return (
     <>
-      <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-[var(--accent)]/5 blur-3xl sm:h-40 sm:w-40" />
-
       <div>
-        <div className="mono mb-5 text-xs tracking-[0.14em] text-[var(--accent)] sm:mb-8">
+        <div className="mono mb-3 text-xs tracking-[0.14em] text-[var(--accent)] sm:mb-4">
           {num}
         </div>
         <h3
-          className={`mb-4 font-bold leading-[1.08] tracking-[-0.03em] sm:mb-6 ${
+          className={`mb-3 font-bold leading-[1.08] tracking-[-0.03em] sm:mb-4 ${
             compact
               ? "text-[clamp(22px,5vw,32px)]"
               : "text-[clamp(26px,3vw,46px)] leading-[1.05]"
@@ -69,12 +143,12 @@ function WhyCardContent({
         >
           {title}
         </h3>
-        <p className="max-w-[500px] text-[15px] leading-relaxed text-[var(--text-dim)] sm:text-base md:text-lg">
+        <p className="max-w-[500px] text-[15px] leading-relaxed text-white sm:text-base md:text-lg">
           {body}
         </p>
       </div>
 
-      <div className="flex items-center justify-between border-t border-[var(--border)] pt-6 sm:pt-8">
+      <div className="mt-4 flex items-center justify-between border-t border-[var(--border)] pt-4 sm:mt-5 sm:pt-5">
         <div className="flex items-center gap-3">
           <span className="h-2 w-2 animate-pulse rounded-full bg-[var(--accent)]" />
           <span className="mono text-[10px] uppercase tracking-[0.25em] text-[var(--text-dim)]">
@@ -120,10 +194,14 @@ function AnimatedWhyCard({
   index,
   item,
   progress,
+  enableEffects,
+  activeIndex,
 }: {
   index: number;
   item: WhyItem;
   progress: MotionValue<number>;
+  enableEffects: boolean;
+  activeIndex: number;
 }) {
   const [num, title, body] = item;
   const start = index / CARD_COUNT;
@@ -133,7 +211,7 @@ function AnimatedWhyCard({
   const y = useTransform(
     progress,
     [enterStart, start, end],
-    [520, 0, 0],
+    [400, 0, 0],
     { clamp: true },
   );
   const rotate = useTransform(
@@ -174,9 +252,13 @@ function AnimatedWhyCard({
       }}
       className="absolute inset-0 will-change-transform"
     >
-      <div className="flex h-full flex-col justify-between overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--bg)] p-7 shadow-[0_20px_60px_rgba(0,0,0,0.12)] sm:rounded-[32px] sm:p-10 lg:shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
+      <WhyCardShell
+        index={index}
+        enableEffects={enableEffects}
+        paused={index !== activeIndex}
+      >
         <WhyCardContent num={num} title={title} body={body} />
-      </div>
+      </WhyCardShell>
     </motion.div>
   );
 }
@@ -184,6 +266,8 @@ function AnimatedWhyCard({
 export function WhySection() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [enableEffects, setEnableEffects] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -192,15 +276,30 @@ export function WhySection() {
 
   const smoothProgress = useSpring(scrollYProgress, SPRING);
 
+  useMotionValueEvent(smoothProgress, "change", (value) => {
+    setActiveIndex(
+      Math.min(CARD_COUNT - 1, Math.max(0, Math.floor(value * CARD_COUNT))),
+    );
+  });
+
   useEffect(() => {
     const motionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const desktopMq = window.matchMedia("(min-width: 1024px)");
 
-    const update = () => setReduceMotion(motionMq.matches);
+    const update = () => {
+      const reduced = motionMq.matches;
+      setReduceMotion(reduced);
+      setEnableEffects(desktopMq.matches && !reduced);
+    };
 
     update();
     motionMq.addEventListener("change", update);
+    desktopMq.addEventListener("change", update);
 
-    return () => motionMq.removeEventListener("change", update);
+    return () => {
+      motionMq.removeEventListener("change", update);
+      desktopMq.removeEventListener("change", update);
+    };
   }, []);
 
   const header = (
@@ -214,8 +313,9 @@ export function WhySection() {
         </>
       }
       subtitle="Anyone can edit a video. Few can engineer a content engine that compounds month after month."
-      subtitleClassName="section-subtitle mb-2 max-w-[680px] text-[clamp(16px,1.2vw,20px)] leading-[1.55] text-[var(--text-dim)]"
-      titleClassName="section-title mb-5 max-w-[940px] text-[clamp(30px,5vw,76px)] font-extrabold leading-[1.02] tracking-[-0.035em] sm:mb-6 sm:leading-none"
+      eyebrowClassName="mb-4"
+      subtitleClassName="section-subtitle mb-0 max-w-[680px] text-[clamp(16px,1.2vw,20px)] leading-[1.55] text-[var(--text-dim)]"
+      titleClassName="section-title mb-3 max-w-[940px] text-[clamp(30px,5vw,76px)] font-extrabold leading-[1.02] tracking-[-0.035em] sm:mb-4 sm:leading-none"
     />
   );
 
@@ -225,17 +325,14 @@ export function WhySection() {
       className="border-y border-[var(--border)] bg-[var(--bg-2)]"
     >
       {/* Mobile + tablet: readable static stack */}
-      <div className="px-4 py-16 sm:px-5 md:px-8 md:py-20 lg:hidden">
+      <div className="px-4 py-12 sm:px-5 md:px-8 md:py-16 lg:hidden">
         <div className="section-inner mx-auto max-w-[var(--max-w)]">
           {header}
-          <div className="mt-8 flex flex-col gap-4 sm:mt-10 sm:gap-5">
-            {WHY.map(([num, title, body]) => (
-              <article
-                key={num}
-                className="relative flex flex-col justify-between overflow-hidden rounded-[20px] border border-[var(--border)] bg-[var(--bg)] p-6 sm:rounded-[24px] sm:p-8"
-              >
+          <div className="mt-6 flex flex-col gap-3 sm:mt-7 sm:gap-4">
+            {WHY.map(([num, title, body], index) => (
+              <WhyCardShell key={num} index={index} compact>
                 <WhyCardContent num={num} title={title} body={body} compact />
-              </article>
+              </WhyCardShell>
             ))}
           </div>
         </div>
@@ -248,18 +345,18 @@ export function WhySection() {
         style={{ height: reduceMotion ? "auto" : `${SCROLL_HEIGHT_VH}vh` }}
       >
         {!reduceMotion ? (
-          <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+          <div className="sticky top-0 flex h-[82vh] min-h-[520px] items-center overflow-hidden py-8">
             <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.03]">
               <h2 className="select-none text-[18vw] font-black tracking-tight">
                 SYSTEMS
               </h2>
             </div>
 
-            <div className="section-inner relative z-10 mx-auto grid w-full max-w-[var(--max-w)] grid-cols-2 gap-16 px-8 xl:gap-20">
+            <div className="section-inner relative z-10 mx-auto grid w-full max-w-[var(--max-w)] grid-cols-2 gap-10 px-8 xl:gap-12">
               <div className="flex items-center">
                 <div>
                   {header}
-                  <div className="mt-10 flex gap-3">
+                  <div className="mt-6 flex gap-2.5">
                     {WHY.map((_, i) => (
                       <ProgressDot key={i} index={i} progress={smoothProgress} />
                     ))}
@@ -267,29 +364,28 @@ export function WhySection() {
                 </div>
               </div>
 
-              <div className="relative mx-auto h-[min(520px,72vh)] w-full max-w-[600px]">
+              <div className="relative mx-auto h-[min(400px,58vh)] w-full max-w-[540px]">
                 {WHY.map((item, i) => (
                   <AnimatedWhyCard
                     key={item[0]}
                     index={i}
                     item={item}
                     progress={smoothProgress}
+                    enableEffects={enableEffects}
+                    activeIndex={activeIndex}
                   />
                 ))}
               </div>
             </div>
           </div>
         ) : (
-          <div className="section-inner mx-auto max-w-[var(--max-w)] px-8 py-20">
+          <div className="section-inner mx-auto max-w-[var(--max-w)] px-8 py-14">
             {header}
-            <div className="mt-10 flex flex-col gap-5">
-              {WHY.map(([num, title, body]) => (
-                <article
-                  key={num}
-                  className="relative flex flex-col justify-between overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--bg)] p-8"
-                >
+            <div className="mt-7 flex flex-col gap-4">
+              {WHY.map(([num, title, body], index) => (
+                <WhyCardShell key={num} index={index}>
                   <WhyCardContent num={num} title={title} body={body} />
-                </article>
+                </WhyCardShell>
               ))}
             </div>
           </div>

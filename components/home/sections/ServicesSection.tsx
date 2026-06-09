@@ -1,13 +1,50 @@
-import Link from "next/link";
+import instagramServiceImg from "@/public/account not found _ Funny iphone wallpaper, Instagram, Aesthetic template.jpg";
 import { SectionHeader } from "./SectionHeader";
+import { ServiceRow } from "./ServiceRow";
 
 const SERVICES = [
-  ["01", "Personal Branding for Founders", "Positioning, scripting, and authority-building content."],
-  ["02", "Instagram & LinkedIn Management", "End-to-end posting, captions, engagement, growth."],
-  ["03", "Video Editing Services", "Cinematic, storytelling, meta ads, UGC, AI voiceover."],
-  ["04", "Podcast Repurposing", "Full edits, viral clips, carousels, newsletters from one episode."],
-  ["05", "UGC Creation", "Employee-led, native, conversion-focused content."],
-  ["06", "YouTube Channel Management", "Scripts, edits, thumbnails, SEO — full channel ownership."],
+  {
+    num: "01",
+    name: "Personal Branding for Founders",
+    desc: "Positioning, scripting, and authority-building content.",
+    image:
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&h=360&auto=format&fit=crop&q=80",
+  },
+  {
+    num: "02",
+    name: "Instagram & LinkedIn Management",
+    desc: "End-to-end posting, captions, engagement, growth.",
+    image: instagramServiceImg.src,
+    imageFit: "contain" as const,
+  },
+  {
+    num: "03",
+    name: "Video Editing Services",
+    desc: "Cinematic, storytelling, meta ads, UGC, AI voiceover.",
+    image:
+      "https://images.unsplash.com/photo-1536240478700-b869070f3a6d?w=500&h=360&auto=format&fit=crop&q=80",
+  },
+  {
+    num: "04",
+    name: "Podcast Repurposing",
+    desc: "Full edits, viral clips, carousels, newsletters from one episode.",
+    image:
+      "https://images.unsplash.com/photo-1590602847861-f357a7672bbd?w=500&h=360&auto=format&fit=crop&q=80",
+  },
+  {
+    num: "05",
+    name: "UGC Creation",
+    desc: "Employee-led, native, conversion-focused content.",
+    image:
+      "https://images.unsplash.com/photo-1617806110386-53b9662cacca?w=500&h=360&auto=format&fit=crop&q=80",
+  },
+  {
+    num: "06",
+    name: "YouTube Channel Management",
+    desc: "Scripts, edits, thumbnails, SEO — full channel ownership.",
+    image:
+      "https://images.unsplash.com/photo-1626819014513-bf62a507b569?w=500&h=360&auto=format&fit=crop&q=80",
+  },
 ] as const;
 
 export function ServicesSection() {
@@ -30,23 +67,8 @@ export function ServicesSection() {
           subtitleClassName="section-subtitle mb-16 max-w-[680px] text-[clamp(17px,1.2vw,20px)] leading-[1.55] text-[var(--text-dim)]"
         />
         <div className="services-list border-t border-[var(--border)]">
-          {SERVICES.map(([num, name, desc]) => (
-            <Link
-              key={num}
-              href="#inquire"
-              className="service-row group relative grid grid-cols-[60px_1fr_44px] items-center gap-4 border-b border-[var(--border)] py-6 text-[var(--text)] no-underline transition-[padding,background] duration-300 after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-px after:origin-left after:scale-x-0 after:bg-[var(--accent)] after:transition-transform after:duration-500 after:[transition-timing-function:cubic-bezier(0.2,0.8,0.2,1)] after:content-[''] hover:bg-[var(--bg-2)] hover:px-4 hover:after:scale-x-100 min-[969px]:grid-cols-[80px_1fr_1.5fr_auto] min-[969px]:gap-8 min-[969px]:px-2 min-[969px]:py-8 min-[969px]:hover:px-6"
-            >
-              <div className="service-num mono text-sm text-[var(--text-muted)]">{num}</div>
-              <div className="service-name text-[clamp(22px,2.4vw,36px)] font-bold leading-tight tracking-[-0.025em]">
-                {name}
-              </div>
-              <div className="service-desc hidden text-[15px] leading-normal text-[var(--text-dim)] min-[969px]:block">
-                {desc}
-              </div>
-              <div className="service-arrow flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--border-strong)] text-base text-[var(--text-dim)] transition-all group-hover:rotate-[-45deg] group-hover:border-[var(--accent)] group-hover:bg-[var(--accent)] group-hover:text-white">
-                →
-              </div>
-            </Link>
+          {SERVICES.map((service) => (
+            <ServiceRow key={service.num} {...service} />
           ))}
         </div>
       </div>
