@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Content Viral Media
+
+React + Vite + Tailwind CSS marketing site.
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Vite dev server + Express API (port 4001) |
+| `npm run dev:vite` | Vite only |
+| `npm run build` | Production build → `dist/` |
+| `npm run preview` | Preview production build |
 
-## Learn More
+## Stack
 
-To learn more about Next.js, take a look at the following resources:
+- **React 19** + **TypeScript**
+- **Vite 6**
+- **Tailwind CSS 4**
+- **React Router 7**
+- **Framer Motion**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+  pages/          Route pages (Home, About, Services, Portfolio, Admin)
+  components/     UI components (same layout as before migration)
+  styles/         globals.css + home.css (Tailwind)
+public/           Static assets
+```
 
-## Deploy on Vercel
+## API
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Form submissions proxy to Express at `http://localhost:4001` via Vite dev proxy.
+Set `API_URL` in environment for production deployments.

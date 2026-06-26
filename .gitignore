@@ -19,6 +19,12 @@
 
 # production
 /build
+/dist
+*.zip
+
+# large local media (keep on disk, do not commit)
+public/Untitled Design (3) (1)(1).mp4
+public/Untitled design (4).mov
 
 # misc
 .DS_Store

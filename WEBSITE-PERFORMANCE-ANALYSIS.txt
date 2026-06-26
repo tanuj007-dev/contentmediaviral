@@ -1,0 +1,286 @@
+================================================================================
+CONTENT VIRAL MEDIA — WEBSITE PERFORMANCE & OPTIMIZATION ANALYSIS
+================================================================================
+Project: portfolio-next (Next.js 16.2.6 + React 19 + Tailwind CSS 4)
+Date: June 8, 2026
+Analyzed by: Codebase audit (build output, assets, components, dependencies)
+
+================================================================================
+EXECUTIVE SUMMARY
+================================================================================
+
+VERDICT: The website is NOT fully optimized yet.
+
+It has a solid modern foundation (Next.js App Router, static pages, optimized
+Google fonts), but the home page loads too much JavaScript up front, carries
+unused assets/deps, and skips several standard performance practices.
+
+Overall performance rating: 6 / 10
+- Good for a marketing site in development
+- Not production-grade optimized for fast mobile / low-end devices
+
+Build status: PASSING (all 8 routes prerendered as static content)
+
+Routes:
+  / (home)
+  /about
+  /services
+  /portfolio
+  /admin
+  /_not-found
+
+================================================================================
+WHAT IS ALREADY GOOD
+================================================================================
+
+[+] Next.js 16 with static prerendering (SSG) on all pages
+[+] next/font/google for Inter, Instrument Serif, JetBrains Mono (self-hosted)
+[+] TypeScript + production build compiles successfully (~10s compile)
+[+] Tailwind CSS 4 (utility-first, tree-shaken in build)
+[+] Some images use loading="lazy" (ServiceRow hover previews)
+[+] Long-form videos use preload="metadata" (not full autopreload)
+[+] prefers-reduced-motion respected in Why + Deliverables scroll sections
+[+] Smooth scroll enabled in globals.css
+[+] Form submission uses fetch API (no full page reload)
+[+] CSS variables for consistent theming (small runtime cost)
+
+================================================================================
+CRITICAL ISSUES (HIGH PRIORITY)
+================================================================================
+
+1. HEAVY CLIENT-SIDE JAVASCRIPT ON HOME PAGE
+   -----------------------------------------
+   12 components use "use client", many on the home page above and below fold:
+
+   - HeroSection.tsx        → framer-motion + mouse tracking + floating cards
+   - WhySection.tsx         → scroll-linked sticky card stack (framer-motion)
+   - DeliverablesSection.tsx→ same scroll animation pattern
+   - WorkSection.tsx        → framer-motion scroll transforms
+   - ContentRedesignSection.tsx → cursor spotlight (motion values + springs)
+   - LongFormVideoCard.tsx  → full video player UI + hover play
+   - HomeClient.tsx         → scroll listeners, IntersectionObservers, FAQ DOM
+   - ServiceRow.tsx, Nav.tsx, InquirePhoneField.tsx, etc.
+
+   Problem: Home page imports HomePartA + HomePartB + HomeClient in one shot.
+   No dynamic import() or lazy loading for below-fold sections.
+
+   Estimated JS chunks (from .next/static/chunks):
+   - Largest chunk: ~222 KB
+   - Second largest: ~204 KB
+   - Another: ~147 KB
+   - CSS bundle: ~106 KB
+   Total client payload is significant for a landing page.
+
+   Impact: Slower First Contentful Paint (FCP), Time to Interactive (TTI),
+   especially on mobile 4G and mid-range phones.
+
+2. UNUSED PUBLIC ASSETS (~2.3 MB TOTAL)
+   ------------------------------------
+   public/ folder total: ~2.32 MB
+
+   Large unused Lottie JSON files (no longer imported after ProcessSection change):
+   - Gears animation.json          ~495 KB
+   - d5f0cecc-....json             ~495 KB
+   - 6e55457e-....json             ~340 KB
+   - 893c142c-....json             ~318 KB
+   - 7915fb40-....json             ~234 KB
+   - growth and profit.json        ~231 KB
+   - caabeb7c-....json             ~124 KB
+   - Business Grow Lottie...json    ~33 KB
+   - + more smaller JSON files
+
+   These still ship with the repo and may be served if linked accidentally.
+   They should be deleted if not used.
+
+3. UNUSED NPM DEPENDENCIES
+   ------------------------
+   Installed but not actively used in components:
+   - lottie-react   (no imports found)
+   - ogl            (only in unused Lightfall.tsx)
+   - lucide-react   (no imports found)
+
+   Lightfall.tsx exists but is not imported anywhere.
+
+   Impact: Larger node_modules, slower installs, risk of accidental bundling.
+
+4. NO next/image USAGE
+   --------------------
+   All images use raw <img> tags:
+   - ServiceRow.tsx (Unsplash URLs)
+   - ResultsSection.tsx (local JPG)
+   - HeroSection.tsx (PNG via import — OK for bundling)
+
+   Missing benefits:
+   - Automatic WebP/AVIF conversion
+   - Responsive srcset
+   - Lazy loading (built-in)
+   - Size optimization via Sharp
+
+5. EXTERNAL MEDIA WITHOUT OPTIMIZATION
+   ------------------------------------
+   - 5 Unsplash images in ServicesSection (external, no next/image config)
+   - 3 Google sample MP4 videos in LongFormSection (large, external CDN)
+   - 3 Unsplash poster images for videos
+
+   Impact: Extra DNS lookups, no CDN control, large video weight on hover.
+
+================================================================================
+MODERATE ISSUES (MEDIUM PRIORITY)
+================================================================================
+
+6. TOO MANY FONT WEIGHTS LOADED
+   ------------------------------
+   Inter font loads weights 300–900 (9 weights) in layout.tsx.
+   Typical sites need 400, 600, 700, 800 at most.
+
+   Impact: ~100–200 KB extra font data.
+
+7. ANIMATION & SCROLL PERFORMANCE
+   -------------------------------
+   Multiple always-running or scroll-bound animations:
+   - BigNumbersSection infinite marquee (animate-scroll-slow)
+   - Hero mouse parallax (continuous spring updates)
+   - Why + Deliverables sticky scroll (520vh / 280vh scroll height)
+   - WorkSection useScroll transforms
+   - ContentRedesign cursor spotlight (spring on mousemove)
+   - Portfolio page also has marquee
+
+   Many elements use backdrop-blur, will-change-transform, blur filters.
+   These are GPU-heavy on mobile and can cause jank.
+
+8. HOME PAGE LOADS EVERYTHING AT ONCE
+   ----------------------------------
+   Home page sections (in order):
+   Nav, Hero, Marquee, Stats, Why, Process, Deliverables, Work,
+   BigNumbers, LongForm (3 videos), Testimonials, ContentRedesign,
+   Compare, FAQ, Inquire, Footer + HomeClient scripts.
+
+   ~15+ sections with no code splitting. User sees hero first but downloads
+   JS for all interactive sections immediately.
+
+9. DUPLICATE / DEAD CODE
+   ----------------------
+   - ResultsSection.tsx exists but is NOT rendered on home (BigNumbers has id="results")
+   - FoundersSection imported in HomePartB but not used
+   - ManifestoSection commented out in HomePartA
+   - react-icons imported from fa, fi, md across many files (moderate bundle cost)
+
+10. SEO & DISCOVERABILITY GAPS
+    ---------------------------
+    - No robots.txt
+    - No sitemap.xml / sitemap.ts
+    - No Open Graph / Twitter card metadata
+    - No canonical URLs
+    - No structured data (JSON-LD)
+
+11. NAVIGATION HASH BUG (OBSERVED)
+    -------------------------------
+    URL can show: localhost:3000/#results#results
+    Nav.tsx uses href="/#results" while already on home with #results.
+    Should use "#results" on home and "/#results" only from other pages.
+
+================================================================================
+LOW PRIORITY / NICE TO HAVE
+================================================================================
+
+12. No explicit caching headers in next.config.ts
+13. No bundle analyzer in package.json scripts
+14. No Lighthouse CI or performance budget
+15. Admin page (/admin) is public — security concern, not perf
+16. Portfolio page is 770+ lines in one file (maintainability, not runtime)
+17. home-tailwind.css is separate from globals.css (minor extra CSS file)
+18. Testimonials marquee may duplicate animation patterns
+
+================================================================================
+PAGE-BY-PAGE NOTES
+================================================================================
+
+HOME (/)
+  - Heaviest page by far
+  - Most client components and animations
+  - 3 external videos ready to play on hover
+  - Biggest optimization target
+
+SERVICES (/services)
+  - ServicesSection with 5 external Unsplash hover images
+  - Lighter than home but still uses ServiceRow (client)
+
+PORTFOLIO (/portfolio)
+  - Large static page, Reveal animations
+  - Duplicate marquee animation
+  - No images from next/image
+
+ABOUT (/about)
+  - Relatively light
+
+ADMIN (/admin)
+  - Client-side admin panel, separate concern
+
+================================================================================
+RECOMMENDED FIXES (PRIORITY ORDER)
+================================================================================
+
+IMMEDIATE (biggest wins):
+  1. Delete unused Lottie JSON files from public/ (~2 MB saved in repo/deploy)
+  2. Remove unused deps: lottie-react, ogl, lucide-react + Lightfall.tsx
+  3. Dynamic import below-fold sections:
+       const WhySection = dynamic(() => import('./WhySection'), { ssr: false })
+     Apply to: Why, Deliverables, LongForm, Work, ContentRedesign
+  4. Replace <img> with next/image + add images.remotePatterns for Unsplash
+  5. Host real videos in public/videos/ (compressed) instead of Google samples
+  6. Reduce Inter font weights to 400, 600, 700, 800 only
+
+SHORT TERM:
+  7. Lazy-load LongFormVideoCard videos (load src only on hover)
+  8. Fix Results nav link to avoid #results#results double hash
+  9. Remove dead imports (FoundersSection, ResultsSection if unused)
+  10. Add sitemap.ts + robots.ts in app/
+  11. Add Open Graph metadata in layout.tsx
+
+MEDIUM TERM:
+  12. Reduce framer-motion usage on mobile (matchMedia → static fallbacks)
+  13. Replace HomeClient DOM scripts with CSS scroll-driven animations where possible
+  14. Add @next/bundle-analyzer and set JS budget (< 200 KB initial)
+  15. Run Lighthouse on mobile and target:
+      - Performance: 85+
+      - LCP: < 2.5s
+      - TBT: < 200ms
+      - CLS: < 0.1
+
+================================================================================
+ESTIMATED METRICS (WITHOUT LIVE LIGHTHOUSE RUN)
+================================================================================
+
+Based on codebase structure (not measured in browser):
+
+  First Load JS (home):     LIKELY HIGH (300–500+ KB estimated)
+  Static generation:        EXCELLENT (all pages static)
+  Image optimization:       POOR (no next/image)
+  Asset cleanup:            POOR (~2.3 MB unused public files)
+  Code splitting:           POOR (minimal)
+  Font optimization:        GOOD (next/font) but over-loaded weights
+  Animation performance:    MODERATE (heavy on low-end mobile)
+  SEO basics:               MODERATE (title/description only)
+  Production readiness:     NEEDS WORK before calling "fully optimized"
+
+================================================================================
+BOTTOM LINE
+================================================================================
+
+This website looks polished and modern, but it is NOT fully optimized and fast
+yet. The main bottlenecks are:
+
+  • Too much client JavaScript loaded upfront (framer-motion + many client sections)
+  • ~2.3 MB of unused Lottie assets sitting in public/
+  • No Next.js Image optimization
+  • External heavy videos and images
+  • Missing SEO/discovery files
+
+The build is healthy and pages are statically generated, which is a strong base.
+With the recommended fixes above — especially asset cleanup, code splitting,
+and next/image — the site could realistically reach "fast" on desktop and
+"good" on mobile within a focused optimization pass.
+
+================================================================================
+END OF REPORT
+================================================================================
